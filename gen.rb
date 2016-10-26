@@ -2,11 +2,12 @@
 # Simple Genetic Algorithm for demonstrative purposes
 
 class GA
-	attr_reader :population, :popsize, :genosize
+	attr_reader :population, :popsize, :genosize, :elitism
 
-	def initialize popsize, genosize
+	def initialize popsize, genosize, elitism=2
 		@popsize = popsize
 		@genosize = genosize
+		@elitism = elitism
 		@population = init_pop
 	end
 
@@ -59,7 +60,7 @@ class GA
 			# sort based on fitness
 			sort_pop_by_fit
 			# fill with children (select parents + crossover)
-			population = make_love popsize
+			population[elitism..-1] = make_love popsize-elitism
 			# mutate new pop (one mutation per gen, uniformly distributed)
 			mutate rand(popsize), rand(genosize)
 			puts "Generation #{ngen+1}\n#{self}"
